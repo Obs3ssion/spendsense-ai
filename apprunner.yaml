@@ -1,0 +1,13 @@
+version: 1.0
+runtime: nodejs20
+
+build:
+  commands:
+    pre-build:
+      - cd server
+      - npm ci
+
+run:
+  command: cd server && npm start
+  network:
+    port: 3000
