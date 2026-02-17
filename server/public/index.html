@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpendSense AI – Behavioral Budgeting Assistant</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header role="banner">
+      <h1>SpendSense AI</h1>
+      <p class="tagline">Behavioral Budgeting Assistant</p>
+      <p class="disclaimer" role="note">
+        SpendSense AI provides behavioral insights only. It is not financial advice.
+      </p>
+    </header>
+
+    <main id="main-content" role="main">
+      <section id="upload" class="card" aria-labelledby="upload-heading">
+        <h2 id="upload-heading">Upload Transactions</h2>
+        <p id="transactionCount" class="transaction-count" aria-live="polite" role="status">Total transactions: 0</p>
+
+        <div class="upload-row">
+          <div class="csv-upload">
+            <label for="csvFile">Choose CSV file</label>
+            <input
+              type="file"
+              id="csvFile"
+              accept=".csv,text/csv"
+              aria-label="Choose a CSV file with columns: date, description, category, amount"
+            >
+            <p id="selectedFileName" class="selected-file muted">Selected file: none</p>
+            <div class="button-row">
+              <button type="button" id="uploadCsvBtn" aria-label="Upload the selected CSV file to the server">
+                Upload CSV
+              </button>
+              <button type="button" id="resetBtn" class="btn-secondary" aria-label="Clear all transactions and reset data for testing">
+                Reset Data
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p class="csv-help" id="csvHelp">
+          CSV format: header required <code>date,description,category,amount</code>. Date: YYYY-MM-DD. Amount: positive number.
+        </p>
+        <p>
+          <button type="button" id="downloadSampleCsv" class="btn-link" aria-label="Download a sample CSV file">
+            Download Sample CSV
+          </button>
+        </p>
+
+        <details class="advanced-upload" aria-label="Advanced: paste JSON to upload transactions">
+          <summary>Advanced: paste JSON</summary>
+          <label for="uploadPayload">JSON body (transactions array or csv string)</label>
+          <textarea
+            id="uploadPayload"
+            rows="6"
+            aria-label="Transaction data as JSON: transactions array or csv string"
+            aria-describedby="uploadMessage"
+          >{"transactions":[{"date":"2026-02-01","description":"Netflix","category":"Subscriptions","amount":15.99}]}</textarea>
+          <button type="button" id="uploadBtn" aria-label="Upload pasted JSON to the server">
+            Upload JSON
+          </button>
+        </details>
+
+        <p id="uploadMessage" class="message" aria-live="polite" aria-atomic="true" role="status"></p>
+      </section>
+
+      <section id="analyze" class="card" aria-labelledby="analyze-heading">
+        <h2 id="analyze-heading">Analyze</h2>
+        <label for="windowDays">Window (days)</label>
+        <input
+          type="number"
+          id="windowDays"
+          value="30"
+          min="1"
+          max="365"
+          aria-label="Number of days to include in analysis, 1 to 365"
+        >
+        <button type="button" id="analyzeBtn" aria-label="Run behavioral analysis on uploaded transactions">
+          Run Analysis
+        </button>
+      </section>
+
+      <section id="results" class="card results-card" aria-labelledby="results-heading" aria-live="polite" aria-atomic="false">
+        <h2 id="results-heading">Your spending insights</h2>
+        <div id="resultsContent">
+          <p id="resultsPlaceholder" class="muted">Upload transactions, then run analysis to see your insights.</p>
+          <div id="resultsSummary" class="summary" hidden aria-hidden="true">
+            <div class="insight-hero" role="region" aria-label="Summary and risk level">
+              <p id="weeklySummary" class="weekly-summary"></p>
+              <div id="riskLevel" class="risk-badge" role="status" aria-label="Risk level"></div>
+            </div>
+            <div class="alerts-box" role="region" aria-labelledby="alerts-heading">
+              <h3 id="alerts-heading">Alerts</h3>
+              <ul id="alertsList"></ul>
+            </div>
+            <div class="subscriptions-box" role="region" aria-labelledby="subscriptions-heading">
+              <h3 id="subscriptions-heading">Recurring subscriptions</h3>
+              <ul id="subscriptionsList"></ul>
+            </div>
+            <details class="debug-details" aria-label="View technical JSON response for debugging">
+              <summary>View Technical JSON (Debug)</summary>
+              <pre id="fullJson"></pre>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
